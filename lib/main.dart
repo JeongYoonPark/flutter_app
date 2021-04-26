@@ -3,6 +3,7 @@ import 'package:flutter_app/test.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:styled_text/styled_text.dart';
+import 'package:flutter_app/widget/cycle_item.dart';
 
 void main() {
   runApp(MyApp());
@@ -95,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget screen1() {
     DateTime _tempTime = DateTime.now();
-    String _formattedDate = DateFormat('kk:mm').format(_tempTime);
+    String _formattedDate = 
+    CycleItem.timeEnToKo(DateFormat('kk:mm').format(_tempTime));
     return Container(
       decoration: BoxDecoration(color: Colors.white),
       child: Column(
@@ -104,66 +106,35 @@ class _MyHomePageState extends State<MyHomePage>
             child: Column(
               children: [
                 StyledText(
-                    text: '만약 <bold>${_formattedDate}</bold>에 잠들면',
+                    text: '만약 <bold>$_formattedDate</bold>에 잠들면',
                     styles: {
                       'bold': TextStyle(
                           fontWeight: FontWeight.w800, color: Colors.black)
                     },
                     style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey)),
-                Text(
-                  '시에 일어나야 합니다.',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black)),
               ],
             ),
+            color:Color.fromRGBO(0, 0, 197, 0.3),
             alignment: Alignment.topLeft,
           ),
           Expanded(
-            child: ListView(
-              children: [
-                Card(
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              '1',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w900),
-                            ),
-                            Text(
-                              'Cycle',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w900),
-                            ),
-                          ],
-                        ),
-                        VerticalDivider(
-                            thickness: 30, width: 50, color: Colors.grey),
-                        Column(
-                          children: [
-                            Text(
-                              'This Section',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w900),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index){
+                DateTime wakeUpTime = _tempTime.add(
+                  Duration(hours: 1, minutes: 44) +
+                    Duration(hours: 1, minutes: 30) * index);
+                return CycleItem(
+                  cycle: index + 1,
+                  nowTime: _tempTime,
+                  wakeUpTime: wakeUpTime,
+                );
+              },
             ),
-          )
+          ),
         ],
       ),
     );
