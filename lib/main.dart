@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/test.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:styled_text/styled_text.dart';
 import 'package:flutter_app/widget/cycle_item.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 void main() {
   runApp(MyApp());
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage>
         body: TabBarView(
           children: [
             screen1(),
-            screen1(),
+            alarm(),
             screen1(),
           ],
           controller: _tabController,
@@ -96,8 +96,8 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget screen1() {
     DateTime _tempTime = DateTime.now();
-    String _formattedDate = 
-    CycleItem.timeEnToKo(DateFormat('kk:mm').format(_tempTime));
+    String _formattedDate =
+        CycleItem.timeEnToKo(DateFormat('kk:mm').format(_tempTime));
     return Container(
       decoration: BoxDecoration(color: Colors.white),
       child: Column(
@@ -117,16 +117,16 @@ class _MyHomePageState extends State<MyHomePage>
                         color: Colors.black)),
               ],
             ),
-            color:Color.fromRGBO(0, 0, 197, 0.3),
+            color: Color.fromRGBO(0, 0, 197, 0.3),
             alignment: Alignment.topLeft,
           ),
           Expanded(
             child: ListView.builder(
               itemCount: 10,
-              itemBuilder: (context, index){
+              itemBuilder: (context, index) {
                 DateTime wakeUpTime = _tempTime.add(
-                  Duration(hours: 1, minutes: 44) +
-                    Duration(hours: 1, minutes: 30) * index);
+                    Duration(hours: 1, minutes: 44) +
+                        Duration(hours: 1, minutes: 30) * index);
                 return CycleItem(
                   cycle: index + 1,
                   nowTime: _tempTime,
@@ -137,6 +137,38 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ],
       ),
+    );
+  }
+
+  Widget alarm() {
+    return Container(
+        child: Column(
+          children: [
+            Container(
+              child: time_picker(),
+            )
+          ],
+    ));
+  }
+  Widget time_picker() {
+    DateTime _dateTime = new DateTime.now();
+    return new TimePickerSpinner(
+      is24HourMode: false,
+      normalTextStyle: TextStyle(
+        fontSize: 24,
+        color: Colors.grey
+      ),
+      highlightedTextStyle: TextStyle(
+        fontSize: 24,
+        color: Colors.black
+      ),
+      spacing: 50,
+      itemHeight: 80,
+      onTimeChange: (time) {
+        setState(() {
+          _dateTime = time;
+        });
+      },
     );
   }
 }

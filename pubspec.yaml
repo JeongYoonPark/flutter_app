@@ -23,7 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  android_alarm_manager: ^2.0.0
   cupertino_icons: ^1.0.2
+  flutter_time_picker_spinner: ^1.0.6+1
   get: ^4.1.4
   intl: ^0.17.0
   styled_text: ^2.0.0
